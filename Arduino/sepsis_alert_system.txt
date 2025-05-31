@@ -1,0 +1,226 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <LiquidCrystal.h>
+#include <PulseSensorPlayground.h>
+
+#define ONE_WIRE_BUS 2   // Pin for Dallas Temperature Sensor
+#define PulseWire A0     // Pulse sensor pin
+#define IR_SENSOR_PIN 3  // IR sensor pin for respiration rate
+#define THRESHOLD 550
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+LiquidCrystal lcd(12, 11, 7, 8, 9, 10);
+PulseSensorPlayground pulseSensor;
+const int buzzer = 4;
+int detectionCount = 0;
+int myBPM = 0;  // Beats per minute
+float temperatureC;
+
+String phoneNumbers[] = { "+919989065522" };  // Add more numbers as needed
+int totalNumbers = 1;
+
+
+void setup() {
+  Serial.begin(9600);
+  // Wire.begin();  // Initialize I2C
+  pulseSensor.analogInput(PulseWire);
+  pulseSensor.setThreshold(THRESHOLD);
+
+  sensors.begin();
+
+  Serial.println("Initializing GSM Module...");
+  delay(1000);
+
+
+  Serial.println("Setup complete.");
+  lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("Design for");
+  lcd.setCursor(0, 1);
+  lcd.print("health Monitor");
+  delay(2000);
+
+  if (pulseSensor.begin()) {
+    // Serial.println("Pulse sensor initialized!");
+  } else {
+    // Serial.println("Failed to initialize pulse sensor!");
+  }
+
+
+
+  // Initialize ADXL345
+  pinMode(IR_SENSOR_PIN, INPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(buzzer, LOW);
+}
+
+void loop() {
+  // Read and display temperature
+  sensors.requestTemperatures();
+  int temperatureC = sensors.getTempCByIndex(0);  // Read temperature in Celsius
+
+
+
+  if (temperatureC != DEVICE_DISCONNECTED_C) {
+
+    // Serial.print("Temperature: ");
+    // Serial.print(temperatureC);
+    // Serial.println(" °C");
+  }
+
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temperature:");
+  lcd.setCursor(0, 1);
+  lcd.print(temperatureC);
+  lcd.print((char)223);  // Degree symbol
+  lcd.print("C");
+  delay(3000);
+
+  // Read and display BPM
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Place finger.");
+  delay(5000);
+
+  if (pulseSensor.sawStartOfBeat()) {
+    myBPM = pulseSensor.getBeatsPerMinute();
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Reading...");
+    delay(5000);  // Allow time for reading
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Heartbeat:");
+    lcd.setCursor(0, 1);
+    lcd.print(myBPM);
+    delay(2000);
+  }
+  unsigned long startTime = millis();
+  detectionCount = 0;
+
+  while (millis() - startTime < 5000) {  // Measure for 5 seconds
+    if (digitalRead(IR_SENSOR_PIN) == HIGH) {
+      detectionCount++;
+
+      // Wait for the object to move away
+      while (digitalRead(IR_SENSOR_PIN) == HIGH) {
+        delay(10);  // Prevent multiple detections
+      }
+    }
+  }
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Respiration:");
+  lcd.setCursor(0, 1);
+  lcd.print(detectionCount);
+  delay(2000);
+
+  String data1 = "";
+  while (Serial.available() > 0)  //If data is available on serial port
+  {
+    String data1 = Serial.readString();
+    // Check if the character 'a' is present in the received data and it's not a single 'a'
+    if (data1.indexOf('t') != -1 && data1.length() > 1) {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("received ML data");
+      delay(1000);
+      //      Serial.println(data1);
+      lcd.clear();
+      lcd.print(data1);
+
+      int indexA = data1.indexOf("t") + 1;
+      int indexB = data1.indexOf("u") + 1;
+      int indexC = data1.indexOf("v") + 1;
+      int indexD = data1.indexOf("w") + 1;
+      String valueA = data1.substring(indexA, indexB - 1);
+      String valueB = data1.substring(indexB, indexC - 1);
+      String valueC = data1.substring(indexC, indexD - 1);
+      String valueD = data1.substring(indexD);
+
+      int u = valueB.toInt();
+      int v = valueC.toInt();
+      int w = valueD.toInt();
+
+      lcd.clear();
+      lcd.print("u: ");
+      lcd.print(u);
+      lcd.print(" v: ");
+      lcd.print(v);
+      lcd.print(" w: ");
+      lcd.print(w);
+      delay(1000);
+      data1 = "";
+
+      if (valueA == "ok") {
+        if (u == 1) {
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("abnormal BPM:");
+          lcd.setCursor(0, 1);
+          lcd.print(myBPM);
+          digitalWrite(buzzer, HIGH);
+          delay(2000);
+          digitalWrite(buzzer, LOW);
+          sendMessages("Abnormal BPM");
+        }
+
+
+        if (v == 1) {
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("abnormal temp");
+          digitalWrite(buzzer, HIGH);
+          delay(2000);
+          digitalWrite(buzzer, LOW);
+          sendMessages("Abnormal temparature");
+        }
+        if (w == 1) {
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("Abnormal Resp:");
+          digitalWrite(buzzer, HIGH);
+          delay(2000);
+          digitalWrite(buzzer, LOW);
+          sendMessages("Abnormal Respiration");
+        }
+      }
+    }
+  }
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("data to ML");
+  delay(1000);
+  String Rf = String("a") + String(myBPM) + String("b") + String(temperatureC) + String("c") + String(detectionCount) + String("d");
+  Serial.println(Rf);
+}
+
+// Read and display respiration rate
+
+void sendMessages(const char *message) {
+
+  Serial.println("sending msg.....");
+
+  for (int i = 0; i < totalNumbers; i++) {
+    Serial.println("message sent to " + phoneNumbers[i]);
+    Serial.println("AT");
+    delay(2000);
+    Serial.println("AT+CMGF=1");  // Set SMS text mode
+    delay(2000);
+    Serial.println("AT+CMGS=\"" + phoneNumbers[i] + "\"\r");  // Send SMS to current number
+    delay(2000);
+    Serial.println(message);
+    delay(2000);
+    Serial.println((char)26);  // End of message
+    delay(2000);
+  }
+  Serial.println("All msgs sent");
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("messsage sent");
+  delay(2000);
+}
