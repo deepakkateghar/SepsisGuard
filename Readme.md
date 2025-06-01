@@ -81,6 +81,6 @@ For academic and testing purposes only.
 
 ## Contact
 For any inquiries, please contact:
-Varshith Jakkula
-Email: 21r21a6690@gmail.com
-LinkedIn: https://www.linkedin.com/in/varshith-jakkula-34145a273
+Varshith Jakkula<br>
+**Email:** 21r21a6690@gmail.com <br>
+**LinkedIn:** https://www.linkedin.com/in/varshith-jakkula-34145a273
