@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Sepsis has become a life-threatening condition, and early detection and therapy are essential to reverse the upward trend of death rates caused by septicemia. The current healthcare systems lack effective techniques for real-time monitoring and forecasting of sepsis development. The IoT-enabled system **SepsisGuard** addresses this gap by linking wearable sensors to the cloud, followed by machine learning (ML) models that continuously monitor critical values like heart rate, temperature, and respiration.
+Sepsis is a life-threatening condition that arises when the body's response to an infection causes widespread inflammation, leading to tissue damage and organ failure. The current healthcare systems lack effective techniques for real-time monitoring and forecasting of sepsis development. The IoT-enabled system **SepsisGuard** addresses this gap by linking wearable sensors to the cloud, followed by machine learning (ML) models that continuously monitor critical values like heart rate, temperature, and respiration.
 
 **SepsisGuard** is an IoT-based real-time health monitoring system designed to detect and alert hospital medical support staff about sepsis cases early. 
 This system features:
