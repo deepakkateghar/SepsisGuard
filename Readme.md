@@ -19,8 +19,6 @@ This system features:
 - Live monitoring dashboards on ThingSpeak.
 - Random Forest ML model with 93.5% accuracy.
 - Real-time alerts for abnormal vital signs.
-- Visualizations and Confusion Matrix for model performance.
-- Comprehensive documentation and reusable code.
 
 ---
 
@@ -70,15 +68,16 @@ This system features:
 
 4. **Monitor live data on your ThingSpeak channel** :
     - Login tou your ThingSpeak account and visit your project channel to monitor your reading continuosly.
-**Sample Output Visuals** : 
-- ThingSpeak dashboard snapshot
+
+5. **Sample Output Visuals** : <br>
+- **ThingSpeak dashboard snapshot** : <br>
     ![ThingSpeak dashboard snapshot](Images/Sepsis_Output_1.png)
-- BPM over time graph
+- **BPM over time graph** : <br>
     ![BPM over time graph](Images/Sepsis_Output_3.png)
-- Temperature levels graph
+- **Temperature levels graph** : <br>
     ![Temperature levels graph](Images/Sepsis_Output_4.png)
 
-5. **Usage**: 
+6. **Usage**: 
     - The system reads data from the Arduino sensors and makes predictions using the trained Random Forest models.
     - Real-time data is uploaded to the ThingSpeak platform for monitoring.
     - Alerts are generated based on the predictions and can be sent to medical staff.
