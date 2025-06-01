@@ -1,0 +1,9 @@
+
+### Sample `requirements.txt`
+
+```plaintext
+pandas
+scikit-learn
+requests
+pyserial
+openpyxl
