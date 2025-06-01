@@ -70,6 +70,13 @@ This system features:
 
 4. **Monitor live data on your ThingSpeak channel** :
     - Login tou your ThingSpeak account and visit your project channel to monitor your reading continuosly.
+**Sample Output Visuals** : 
+- ThingSpeak dashboard snapshot
+    ![ThingSpeak dashboard snapshot](Images\Sepsis_Output_1.png)
+- BPM over time graph
+    ![BPM over time graph](Images\Sepsis_Output_3.png)
+- Temperature levels graph
+    ![Temperature levels graph](Images\Sepsis_Output_4.png)
 
 5. **Usage**: 
     - The system reads data from the Arduino sensors and makes predictions using the trained Random Forest models.
@@ -80,7 +87,7 @@ This system features:
 For academic and testing purposes only.
 
 ## Contact
-For any inquiries, please contact:
-Varshith Jakkula<br>
+For any inquiries, please contact:<br>
+**Varshith Jakkula**<br>
 **Email:** 21r21a6690@gmail.com <br>
 **LinkedIn:** https://www.linkedin.com/in/varshith-jakkula-34145a273
