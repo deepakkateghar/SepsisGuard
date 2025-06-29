@@ -89,4 +89,4 @@ For academic and testing purposes only.
 For any inquiries, please contact:<br>
 **Kateghar Deepak**<br>
 **Email:** deepakkateghar@gmail.com <br>
-**LinkedIn:** https://www.linkedin.com/in/deepak-1006
+**LinkedIn:** https://www.linkedin.com/in/deepak-d1006
