@@ -87,6 +87,6 @@ For academic and testing purposes only.
 
 ## Contact
 For any inquiries, please contact:<br>
-**Varshith Jakkula**<br>
-**Email:** 21r21a6690@gmail.com <br>
-**LinkedIn:** https://www.linkedin.com/in/varshith-jakkula-34145a273
+**Kateghar Deepak**<br>
+**Email:** deepakkateghar@gmail.com <br>
+**LinkedIn:** https://www.linkedin.com/in/deepak-1006
